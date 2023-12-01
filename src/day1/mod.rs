@@ -1,15 +1,16 @@
 use std::collections::HashMap;
 
 pub fn day1_tests() {
-    part1(include_str!("test.txt"));
-    part2(include_str!("test2.txt"));
+    println!("Part1 Test: {}",part1(include_str!("test.txt")));
+    println!("Part2 Test: {}",part2(include_str!("test2.txt")));
 }
 pub fn day1() {
-    part1(include_str!("input.txt"));
-    part2(include_str!("input.txt"));
+    println!("Part1: {}",part1(include_str!("input.txt")));
+    println!("Part2: \
+    {}",part2(include_str!("input.txt")));
 }
 
-pub fn part1(input: &str) {
+pub fn part1(input: &str) -> i32 {
     let result = input.lines().map(|l| {
         let mut result1 = None;
         while result1.is_none() {
@@ -32,14 +33,13 @@ pub fn part1(input: &str) {
         let result3 = format!("{}{}",result1.unwrap(),result2.unwrap()).parse::<i32>().unwrap();
         result3
     }).collect::<Vec<_>>();
-    //println!("{:?}",result);
-    println!("{:?}",result.iter().sum::<i32>());
+    result.iter().sum::<i32>()
 }
 
 
 
-pub fn part2(input: &str) {
-    let mut digits = HashMap::from(
+pub fn part2(input: &str) -> i32 {
+    let digits = HashMap::from(
         [("one","1"),("two","2"),("three","3"),("four","4"),("five","5"),
             ("six","6"),("seven","7"),("eight","8"),("nine","9")]
     );
@@ -78,6 +78,5 @@ pub fn part2(input: &str) {
         let result3 = format!("{}{}",result1.unwrap(),result2.unwrap()).parse::<i32>().unwrap();
         result3
     }).collect::<Vec<_>>();
-    println!("{:?}",result.iter().sum::<i32>());
+    result.iter().sum::<i32>()
 }
-
