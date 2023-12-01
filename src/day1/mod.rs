@@ -10,13 +10,14 @@ pub fn day1() {
     {}",part2(include_str!("input.txt")));
 }
 
-pub fn part1(input: &str) -> i32 {
+pub fn part1(input: &str) -> usize {
     let result = input.lines().map(|l| {
         let mut result1 = None;
         while result1.is_none() {
             for i in 0..l.len() {
-                if l[i..i+1].parse::<i32>().is_ok() {
-                    result1 = Some(l[i..i+1].to_owned());
+                let test = l[i..i+1].parse::<usize>();
+                if test.is_ok() {
+                    result1 = Some(test.unwrap());
                     break;
                 }
             }
@@ -24,24 +25,22 @@ pub fn part1(input: &str) -> i32 {
         let mut result2 = None;
         while result2.is_none() {
             for i in (0..l.len()).rev() {
-                if l[i..i+1].parse::<i32>().is_ok() {
-                    result2 = Some(l[i..i+1].to_owned());
+                let test = l[i..i+1].parse::<usize>();
+                if test.is_ok() {
+                    result2 = Some(test.unwrap());
                     break;
                 }
             }
         }
-        let result3 = format!("{}{}",result1.unwrap(),result2.unwrap()).parse::<i32>().unwrap();
-        result3
+        result1.unwrap() * 10 + result2.unwrap()
     }).collect::<Vec<_>>();
-    result.iter().sum::<i32>()
+    result.iter().sum::<usize>()
 }
 
-
-
-pub fn part2(input: &str) -> i32 {
+pub fn part2(input: &str) -> usize {
     let digits = HashMap::from(
-        [("one","1"),("two","2"),("three","3"),("four","4"),("five","5"),
-            ("six","6"),("seven","7"),("eight","8"),("nine","9")]
+        [("one",1usize),("two",2),("three",3),("four",4),("five",5),
+            ("six",6),("seven",7),("eight",8),("nine",9)]
     );
 
     let result = input.lines().map(|l| {
@@ -50,12 +49,13 @@ pub fn part2(input: &str) -> i32 {
             for i in 0..l.len() {
                 for (k,v) in digits.iter() {
                     if l[i..].starts_with(*k) {
-                        result1 = Some(v.to_string());
+                        result1 = Some(*v);
                         break 'first;
                     }
                 }
-                if l[i..i+1].parse::<i32>().is_ok() {
-                    result1 = Some(l[i..i+1].to_owned());
+                let test = l[i..i+1].parse::<usize>();
+                if test.is_ok() {
+                    result1 = Some(test.unwrap());
                     break;
                 }
             }
@@ -65,18 +65,18 @@ pub fn part2(input: &str) -> i32 {
             for i in (0..l.len()).rev() {
                 for (k,v) in digits.iter() {
                     if l[i..].starts_with(*k) {
-                        result2 = Some(v.to_string());
+                        result2 = Some(*v);
                         break 'second;
                     }
                 }
-                if l[i..i+1].parse::<i32>().is_ok() {
-                    result2 = Some(l[i..i+1].to_owned());
+                let test = l[i..i+1].parse::<usize>();
+                if test.is_ok() {
+                    result2 = Some(test.unwrap());
                     break;
                 }
             }
         }
-        let result3 = format!("{}{}",result1.unwrap(),result2.unwrap()).parse::<i32>().unwrap();
-        result3
+        result1.unwrap() * 10 + result2.unwrap()
     }).collect::<Vec<_>>();
-    result.iter().sum::<i32>()
+    result.iter().sum::<usize>()
 }
