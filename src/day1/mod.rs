@@ -13,22 +13,20 @@ pub fn day1() {
 pub fn part1(input: &str) -> usize {
     let result = input.lines().map(|l| {
         let mut result1 = None;
-        while result1.is_none() {
+        'one: while result1.is_none() {
             for i in 0..l.len() {
-                let test = l[i..i+1].parse::<usize>();
-                if test.is_ok() {
-                    result1 = Some(test.unwrap());
-                    break;
+                if let Ok(value) = l[i..i+1].parse::<usize>() {
+                    result1 = Some(value);
+                    break 'one;
                 }
             }
         }
         let mut result2 = None;
-        while result2.is_none() {
+        'two: while result2.is_none() {
             for i in (0..l.len()).rev() {
-                let test = l[i..i+1].parse::<usize>();
-                if test.is_ok() {
-                    result2 = Some(test.unwrap());
-                    break;
+                if let Ok(value) = l[i..i+1].parse::<usize>() {
+                    result2 = Some(value);
+                    break 'two;
                 }
             }
         }
@@ -53,10 +51,9 @@ pub fn part2(input: &str) -> usize {
                         break 'first;
                     }
                 }
-                let test = l[i..i+1].parse::<usize>();
-                if test.is_ok() {
-                    result1 = Some(test.unwrap());
-                    break;
+                if let Ok(value) = l[i..i+1].parse::<usize>() {
+                    result1 = Some(value);
+                    break 'first;
                 }
             }
         }
@@ -69,10 +66,9 @@ pub fn part2(input: &str) -> usize {
                         break 'second;
                     }
                 }
-                let test = l[i..i+1].parse::<usize>();
-                if test.is_ok() {
-                    result2 = Some(test.unwrap());
-                    break;
+                if let Ok(value) = l[i..i+1].parse::<usize>() {
+                    result2 = Some(value);
+                    break 'second;
                 }
             }
         }
