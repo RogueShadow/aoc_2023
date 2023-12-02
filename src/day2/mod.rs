@@ -1,22 +1,35 @@
+use crate::colors::*;
+
 
 pub fn day2_tests() {
-    println!("Day2 Part1 Test: {:?}",part1(include_str!("test.txt")));
-    println!("Day2 Part2 Test: {:?}",part2(include_str!("test.txt")));
+    title(2);
+    let part1 = part1(include_str!("test.txt"));
+    assert_eq!(part1,8);
+    part(1,part1);
+    let part2 = part2(include_str!("test.txt"));
+    assert_eq!(part2,2286);
+    part(2,part2);
 }
 pub fn day2() {
-    println!("Day2 Part1 Full: {:?}",part1(include_str!("input.txt")));
-    println!("Day2 Part2 Full: {:?}",part2(include_str!("input.txt")));
+    title(2);
+    let part1 = part1(include_str!("input.txt"));
+    assert_eq!(part1,2447);
+    part(1,part1);
+    let part2 = part2(include_str!("input.txt"));
+    assert_eq!(part2,56322);
+    part(2,part2);
 }
 
 pub fn part1(data: &str) -> usize {
-    let result = data.lines().map(|line| {
+    data.lines().map(|line| {
         let (id,rolls) = line.split_once(':').unwrap();
-        let id = id[5..].parse::<usize>().unwrap();
-        let cubes = rolls.split(';').map(|handfull|{
+        let id = parse_usize(&id[5..]);
+        let mut colors_max = (0usize,0usize,0usize);
+        rolls.split(';').for_each(|handfull|{
             let mut colors = (0usize,0usize,0usize);
             handfull.split(',').for_each(|dice| {
                 let (number, color) = dice.trim().split_once(' ').unwrap();
-                let number = number.parse::<usize>().unwrap();
+                let number = parse_usize(number);
                 match (number, color) {
                     (n, "red") => { colors.0 += n; }
                     (n, "green") => { colors.1 += n; }
@@ -24,27 +37,25 @@ pub fn part1(data: &str) -> usize {
                     _ => {}
                 };
             });
-            colors
-        }).collect::<Vec<_>>();
-        Game {id, cubes}
-    }).collect::<Vec<_>>();
-
-    let possible = result.iter().filter(|game| {
-        let max = game.max();
-        max.0 <= 12 && max.1 <= 13 && max.2 <= 14
-    }).collect::<Vec<_>>();
-    possible.iter().map(|game| game.id).sum::<usize>()
+            colors_max.0 = colors_max.0.max(colors.0);
+            colors_max.1 = colors_max.1.max(colors.1);
+            colors_max.2 = colors_max.2.max(colors.2);
+        });
+        (id,colors_max)
+    }).filter(|(_,colors)| {
+        colors.0 <= 12 && colors.1 <= 13 && colors.2 <= 14
+    }).map(|(id,_)| id ).sum::<usize>()
 }
 
 pub fn part2(data: &str) -> usize {
-    let result = data.lines().map(|line| {
-        let (id,rolls) = line.split_once(':').unwrap();
-        let id = id[5..].parse::<usize>().unwrap();
-        let cubes = rolls.split(';').map(|handfull|{
+    data.lines().map(|line| {
+        let rolls= line.split_once(':').unwrap().1;
+        let mut colors_max = (0usize,0usize,0usize);
+        rolls.split(';').for_each(|handfull|{
             let mut colors = (0usize,0usize,0usize);
             handfull.split(',').for_each(|dice| {
                 let (number, color) = dice.trim().split_once(' ').unwrap();
-                let number = number.parse::<usize>().unwrap();
+                let number = parse_usize(number);
                 match (number, color) {
                     (n, "red") => { colors.0 += n; }
                     (n, "green") => { colors.1 += n; }
@@ -52,31 +63,21 @@ pub fn part2(data: &str) -> usize {
                     _ => {}
                 };
             });
-            colors
-        }).collect::<Vec<_>>();
-        Game {id, cubes}
-    }).collect::<Vec<_>>();
-
-    result.iter().map(|game| game.power()).sum::<usize>()
-}
-
-#[derive(Debug)]
-pub struct Game {
-    id: usize,
-    cubes: Vec<(usize,usize,usize)>,
-}
-impl Game {
-    pub fn max(&self) -> (usize,usize,usize) {
-        let mut max = (0,0,0);
-        self.cubes.iter().for_each(|set|  {
-            max.0 = max.0.max(set.0);
-            max.1 = max.1.max(set.1);
-            max.2 = max.2.max(set.2);
+            colors_max.0 = colors_max.0.max(colors.0);
+            colors_max.1 = colors_max.1.max(colors.1);
+            colors_max.2 = colors_max.2.max(colors.2);
         });
-        max
+        colors_max
+    }).map(|colors| colors.0 * colors.1 * colors.2 ).sum::<usize>()
+}
+
+pub fn parse_usize(str: &str) -> usize {
+    let mut result = 0usize;
+    for b in str.as_bytes() {
+        match b {
+            b'0'..=b'9' => { result = result * 10 + (*b - b'0') as usize}
+            _ => {}
+        }
     }
-    pub fn power(&self) -> usize {
-        let max = self.max();
-        max.0 * max.1 * max.2
-    }
+    result
 }

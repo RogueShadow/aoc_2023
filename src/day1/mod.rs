@@ -1,78 +1,92 @@
-use std::collections::HashMap;
+use crate::colors::*;
 
 pub fn day1_tests() {
-    println!("Part1 Test: {}",part1(include_str!("test.txt")));
-    println!("Part2 Test: {}",part2(include_str!("test2.txt")));
+    title(1);
+    let part1 = part1(include_str!("test.txt"));
+    assert_eq!(part1,142);
+    part(1,part1);
+    let part2 = part2(include_str!("test2.txt"));
+    assert_eq!(part2,281);
+    part(2,part2);
 }
 pub fn day1() {
-    println!("Part1: {}",part1(include_str!("input.txt")));
-    println!("Part2: \
-    {}",part2(include_str!("input.txt")));
+    title(1);
+    let part1 = part1(include_str!("input.txt"));
+    assert_eq!(part1,54338);
+    part(1,part1);
+
+    let part2 = part2(include_str!("input.txt"));
+    assert_eq!(part2,53389);
+    part(2,part2);
 }
 
 pub fn part1(input: &str) -> usize {
-    let result = input.lines().map(|l| {
+    input.lines().map(|l| {
         let mut result1 = None;
         'one: while result1.is_none() {
-            for i in 0..l.len() {
-                if let Ok(value) = l[i..i+1].parse::<usize>() {
-                    result1 = Some(value);
-                    break 'one;
+            for b in l.as_bytes() {
+                match b {
+                    b'0'..=b'9' => {
+                        result1 = Some((*b - b'0') as usize);
+                        break 'one;
+                    }
+                    _ => {}
                 }
             }
         }
         let mut result2 = None;
         'two: while result2.is_none() {
-            for i in (0..l.len()).rev() {
-                if let Ok(value) = l[i..i+1].parse::<usize>() {
-                    result2 = Some(value);
-                    break 'two;
+            for b in l.as_bytes().iter().rev() {
+                match b {
+                    b'0'..=b'9' => {
+                        result2 = Some((*b - b'0') as usize);
+                        break 'two;
+                    }
+                    _ => {}
                 }
             }
         }
         result1.unwrap() * 10 + result2.unwrap()
-    }).collect::<Vec<_>>();
-    result.iter().sum::<usize>()
+    }).sum::<usize>()
 }
 
 pub fn part2(input: &str) -> usize {
-    let digits = HashMap::from(
-        [("one",1usize),("two",2),("three",3),("four",4),("five",5),
-            ("six",6),("seven",7),("eight",8),("nine",9)]
-    );
+    const DIGIT: [&'static str;9] = ["one","two","three","four","five","six","seven","eight","nine"];
+    const DIGITB: [u8; 9] = [b'1',b'2',b'3',b'4',b'5',b'6',b'7',b'8',b'9'];
 
-    let result = input.lines().map(|l| {
-        let mut result1 = None;
-        'first: while result1.is_none() {
+    input.lines().map(|l| {
+        let result1;
+        'first: loop {
             for i in 0..l.len() {
-                for (k,v) in digits.iter() {
-                    if l[i..].starts_with(*k) {
-                        result1 = Some(*v);
+                for (r,s) in DIGIT.iter().enumerate() {
+                    if l[i..].starts_with(*s) {
+                        result1 = r+1;
                         break 'first;
                     }
                 }
-                if let Ok(value) = l[i..i+1].parse::<usize>() {
-                    result1 = Some(value);
+                let byte = l[i..i+1].as_bytes()[0];
+                if DIGITB.contains(&byte) {
+                    result1 = (byte - b'0') as usize;
                     break 'first;
                 }
             }
         }
-        let mut result2 = None;
-        'second: while result2.is_none() {
+        let result2;
+        'second: loop {
             for i in (0..l.len()).rev() {
-                for (k,v) in digits.iter() {
-                    if l[i..].starts_with(*k) {
-                        result2 = Some(*v);
+                for (r,s) in DIGIT.iter().enumerate() {
+                    if l[i..].starts_with(*s) {
+                        result2 = r+1;
                         break 'second;
                     }
                 }
-                if let Ok(value) = l[i..i+1].parse::<usize>() {
-                    result2 = Some(value);
+                let byte = l[i..i+1].as_bytes()[0];
+                if DIGITB.contains(&byte) {
+                    result2 = (byte - b'0') as usize;
                     break 'second;
                 }
             }
         }
-        result1.unwrap() * 10 + result2.unwrap()
-    }).collect::<Vec<_>>();
-    result.iter().sum::<usize>()
+        result1 * 10 + result2
+    }).sum::<usize>()
 }
