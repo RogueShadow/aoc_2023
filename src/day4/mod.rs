@@ -48,7 +48,7 @@ pub fn part1(data: &str) -> u32 {
         cards.insert(card,(winning,numbers));
     });
     let mut sum = 0;
-    cards.iter().for_each(|(card,(win,have))|{
+    cards.iter().for_each(|(_,(win,have))|{
         let mut result = 0;
         have.iter().for_each(|h| {
             if win.contains(h) {
@@ -59,7 +59,6 @@ pub fn part1(data: &str) -> u32 {
             }
         });
         sum += result;
-        result = 0;
     });
     sum
 }
@@ -100,7 +99,6 @@ pub fn part2(data: &str) -> u32 {
             }
         });
         //println!("Card {card}:Instances {}: matching numbers {wins}\nAdding Copies Of {:?}",instances,*card+1..=card+wins);
-        wins = 0;
     });
     (cards.len() as u32 + copies.iter().map(|c| c.1).sum::<u32>()) as u32
 }
