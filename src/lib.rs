@@ -3,6 +3,7 @@ pub mod day2;
 pub mod day3;
 pub mod day4;
 pub mod day5;
+pub mod day6;
 
 pub mod colors {
     use std::fmt::Display;
@@ -14,6 +15,9 @@ pub mod colors {
     }
     pub fn title(day: u32) {
         println!("{}", format!("  [Running Day {day}]").color(Color::Aquamarine1a));
+    }
+    pub fn tests(day: u32) {
+        println!("{}", format!("  [Running Day {day} Tests]").color(Color::Aquamarine1a));
     }
     pub fn part<T>(part: u32,value: T) where T: Display {
         print!("{}",format!("    Part {part}").color(Color::Blue));

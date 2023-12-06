@@ -1,8 +1,10 @@
 use crate::colors::*;
 
 pub fn day1_tests() {
-    title(1);
+    tests(1);
+    let timer = std::time::Instant::now();
     let part1 = part1(include_str!("test.txt"));
+    let time = timer.elapsed().as_secs_f32() * 1000.0;
     assert_eq!(part1,142);
     part(1,part1);
     let part2 = part2(include_str!("test2.txt"));

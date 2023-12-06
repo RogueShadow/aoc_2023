@@ -1,5 +1,4 @@
 use std::ops::Range;
-use std::slice::Iter;
 use rayon::prelude::*;
 use crate::colors::*;
 
@@ -31,7 +30,7 @@ pub fn day5() {
     let t = timer.elapsed().as_secs_f32() * 1000.0;
     part(2,result);
     time(t);
-    //assert_eq!(result,46294175);  // Can I search in reverse? Starting with the location?
+    assert_eq!(result,46294175);  // Can I search in reverse? Starting with the location?
 }
 pub fn part1(data: &str) -> u128 {
     let mut lines = data.lines();
@@ -44,7 +43,7 @@ pub fn part1(data: &str) -> u128 {
     let mut temp_humidity = vec![];
     let mut hum_loc = vec![];
     let mut state = 0;
-    lines.for_each(|line| {
+    lines.by_ref().for_each(|line| {
        if line.starts_with("seed-to-soil") {
            state = 0;
        } else if line.starts_with("soil-to-fertilizer") {
@@ -73,7 +72,7 @@ pub fn part1(data: &str) -> u128 {
            }
        }
     });
-    seeds.iter().map(|seed| {
+    seeds.iter().by_ref().map(|seed| {
         let mut number = *seed;
         number = check(&seed_soil,number);
         number = check(&soil_fert,number);
@@ -107,7 +106,7 @@ pub fn part2(data: &str) -> u128 {
     let mut temp_humidity = vec![];
     let mut hum_loc = vec![];
     let mut state = 0;
-    lines.for_each(|line| {
+    lines.by_ref().for_each(|line| {
         if line.starts_with("seed-to-soil") {
             state = 0;
         } else if line.starts_with("soil-to-fertilizer") {
@@ -150,7 +149,6 @@ pub fn part2(data: &str) -> u128 {
             number = check2(&hum_loc, number);
             result = result.min(number);
         });
-        println!("{}%", i / len);
         result
     }).min().unwrap()
 }
@@ -193,15 +191,19 @@ pub fn part2_smarter(data: &str) -> u128 {
         }else if line.starts_with("humidity-to-location") {
             state = 6;
         }else if !line.is_empty() {
-            let range = line.split_whitespace().map(|num| num.parse::<u128>().unwrap()).collect::<Vec<_>>();
+            let mut range = line.split_whitespace().map(|num| num.parse::<u128>().unwrap());
+            let start1 = range.next().unwrap();
+            let start2 = range.next().unwrap();
+            let len = range.next().unwrap();
+            let ranges = (start1..start1+len,start2..start2+len);
             match state {
-                0 => seed_soil.push((range[0]..range[0]+range[2],range[1]..range[1]+range[2])),
-                1 => soil_fert.push((range[0]..range[0]+range[2],range[1]..range[1]+range[2])),
-                2 => fert_water.push((range[0]..range[0]+range[2],range[1]..range[1]+range[2])),
-                3 => water_light.push((range[0]..range[0]+range[2],range[1]..range[1]+range[2])),
-                4 => light_temp.push((range[0]..range[0]+range[2],range[1]..range[1]+range[2])),
-                5 => temp_humidity.push((range[0]..range[0]+range[2],range[1]..range[1]+range[2])),
-                6 => hum_loc.push((range[0]..range[0]+range[2],range[1]..range[1]+range[2])),
+                0 => seed_soil.push(ranges),
+                1 => soil_fert.push(ranges),
+                2 => fert_water.push(ranges),
+                3 => water_light.push(ranges),
+                4 => light_temp.push(ranges),
+                5 => temp_humidity.push(ranges),
+                6 => hum_loc.push(ranges),
                 _ => println!("Invalid state!"),
             }
         }
@@ -209,8 +211,7 @@ pub fn part2_smarter(data: &str) -> u128 {
 
     hum_loc.sort_by(|a,b|a.0.start.cmp(&b.0.start));
     let mut result = 0u128;
-    'outer: for (i,r) in hum_loc.iter().enumerate() {
-        println!("{}/{}",i,hum_loc.len());
+    'outer: for r in hum_loc.iter() {
         for loc in r.0.clone().into_iter() {
             let mut number = loc;
             let number = check_reverse2(&hum_loc,&number);
@@ -221,7 +222,7 @@ pub fn part2_smarter(data: &str) -> u128 {
             let number = check_reverse2(&soil_fert,&number);
             let number = check_reverse2(&seed_soil,&number);
             for sr in seeds.iter() {
-                if sr.contains(&number) {
+                if number >= sr.start && number < sr.end {
                     result = loc;
                     break 'outer;
                 }
@@ -234,7 +235,7 @@ pub fn part2_smarter(data: &str) -> u128 {
 
 pub fn check_reverse2(ranges: &Vec<(Range<u128>,Range<u128>)>, number: &u128) -> u128 {
     for ss in ranges {
-        if ss.0.contains(&number) {
+        if number >= &ss.0.start && number < &ss.0.end {
             let pos = number - ss.0.start;
             return ss.1.start + pos;
         }
