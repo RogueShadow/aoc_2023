@@ -1,33 +1,14 @@
-use crate::colors::*;
+use crate::run_day;
 
 pub fn day6_tests() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    tests(6);
-    part(1,result);
-    time(t);
-    assert_eq!(result,288);
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
+    let (r1,r2) = run_day("6 Tests", vec![include_str!("test.txt")],part1,part2);
+    assert_eq!(r1,288);
+
 }
 pub fn day6() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(6);
-    part(1, result);
-    time(t);
-    assert_eq!(result, 1710720);
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2, result);
-    time(t);
-    assert_eq!(result, 35349468);
+    let (r1,r2) = run_day("6", vec![include_str!("input.txt")],part1,part2);
+    assert_eq!(r1, 1710720);
+    assert_eq!(r2, 35349468);
 }
 
 pub fn part1(data: &str) -> usize {

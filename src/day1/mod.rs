@@ -1,25 +1,14 @@
-use crate::colors::*;
+use crate::run_day;
 
 pub fn day1_tests() {
-    tests(1);
-    let timer = std::time::Instant::now();
-    let part1 = part1(include_str!("test.txt"));
-    let time = timer.elapsed().as_secs_f32() * 1000.0;
-    assert_eq!(part1,142);
-    part(1,part1);
-    let part2 = part2(include_str!("test2.txt"));
-    assert_eq!(part2,281);
-    part(2,part2);
+    let (r1,r2) = run_day("1 Tests",vec![include_str!("test.txt"),include_str!("test2.txt")],part1,part2);
+    assert_eq!(r1,142);
+    assert_eq!(r2,281);
 }
 pub fn day1() {
-    title(1);
-    let part1 = part1(include_str!("input.txt"));
-    assert_eq!(part1,54338);
-    part(1,part1);
-
-    let part2 = part2(include_str!("input.txt"));
-    assert_eq!(part2,53389);
-    part(2,part2);
+    let (r1,r2) = run_day("1",vec![include_str!("input.txt")],part1,part2);
+    assert_eq!(r1,54338);
+    assert_eq!(r2,53389);
 }
 
 pub fn part1(input: &str) -> usize {

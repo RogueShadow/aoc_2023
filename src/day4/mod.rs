@@ -1,37 +1,15 @@
 use std::collections::HashMap;
-use crate::colors::*;
+use crate::run_day;
 
 pub fn day4_tests() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(4);
-    part(1,result);
-    time(t);
-    assert_eq!(result,13);
-
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
-    assert_eq!(result,30);
+    let (r1,r2) = run_day("4 Tests", vec![include_str!("test.txt")], part1, part2);
+    assert_eq!(r1,13);
+    assert_eq!(r2,30);
 }
 pub fn day4() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(4);
-    part(1,result);
-    time(t);
-    assert_eq!(result,18619);
-
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
-    assert_eq!(result,8063216);
+    let (r1,r2) = run_day("4", vec![include_str!("input.txt")], part1, part2);
+    assert_eq!(r1,18619);
+    assert_eq!(r2,8063216);
 }
 pub fn part1(data: &str) -> u32 {
     let mut cards: HashMap<u32,(Vec<u32>,Vec<u32>)> = HashMap::default();

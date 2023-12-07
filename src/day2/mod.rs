@@ -1,23 +1,15 @@
-use crate::colors::*;
+use crate::run_day;
 
 
 pub fn day2_tests() {
-    title(2);
-    let part1 = part1(include_str!("test.txt"));
-    assert_eq!(part1,8);
-    part(1,part1);
-    let part2 = part2(include_str!("test.txt"));
-    assert_eq!(part2,2286);
-    part(2,part2);
+    let (r1,r2) = run_day("2 Tests", vec![include_str!("test.txt")],part1,part2);
+    assert_eq!(r1,8);
+    assert_eq!(r2,2286);
 }
 pub fn day2() {
-    title(2);
-    let part1 = part1(include_str!("input.txt"));
-    assert_eq!(part1,2447);
-    part(1,part1);
-    let part2 = part2(include_str!("input.txt"));
-    assert_eq!(part2,56322);
-    part(2,part2);
+    let (r1,r2) = run_day("2",vec![include_str!("input.txt")],part1,part2);
+    assert_eq!(r1,2447);
+    assert_eq!(r2,56322);
 }
 
 pub fn part1(data: &str) -> usize {

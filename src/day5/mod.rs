@@ -1,36 +1,16 @@
 use std::ops::Range;
 use rayon::prelude::*;
-use crate::colors::*;
+use crate::run_day;
 
 pub fn day5_tests() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(5);
-    part(1,result);
-    time(t);
-    assert_eq!(result,35);
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
-    assert_eq!(result,46);
+    let (r1,r2) = run_day("5 Tests", vec![include_str!("test.txt")],part1,part2);
+    assert_eq!(r1,35);
+    assert_eq!(r2,46);
 }
 pub fn day5() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(5);
-    part(1,result);
-    time(t);
-    assert_eq!(result,484023871);
-    let timer = std::time::Instant::now();
-    let result = part2_smarter(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
-    assert_eq!(result,46294175);  // Can I search in reverse? Starting with the location?
+    let (r1,r2) = run_day("5", vec![include_str!("input.txt")],part1,part2);
+    assert_eq!(r1,484023871);
+    assert_eq!(r2,46294175);
 }
 pub fn part1(data: &str) -> u128 {
     let mut lines = data.lines();

@@ -1,36 +1,14 @@
-use crate::colors::*;
+use crate::run_day;
 
 pub fn day3_tests() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(3);
-    part(1,result);
-    time(t);
-    assert_eq!(result,4361);
-
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
-    assert_eq!(result,467835);
+    let (r1,r2) = run_day("3 Tests", vec![include_str!("test.txt")],part1,part2);
+    assert_eq!(r1,4361);
+    assert_eq!(r2,467835);
 }
 pub fn day3() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("input.txt"));// 314,085 too low // 527,439 too low 314274
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(3);
-    part(1,result);
-    time(t);
-    assert_eq!(result,533784);
-
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
-    assert_eq!(result,78826761);
+    let (r1,r2) = run_day("3", vec![include_str!("input.txt")], part1,part2);
+    assert_eq!(r1,533784);
+    assert_eq!(r2,78826761);
 }
 
 pub fn part1(data: &str) -> u128 {

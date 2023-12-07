@@ -1,36 +1,16 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use crate::colors::*;
+use crate::run_day;
 
 pub fn day7_tests() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    tests(7);
-    part(1,result);
-    time(t);
-    assert_eq!(result,6440);
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("test.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2,result);
-    time(t);
-    assert_eq!(result,5905);
+    let (r1,r2) = run_day("7 Tests", vec![include_str!("test.txt")],part1,part2);
+    assert_eq!(r1,6440);
+    assert_eq!(r2,5905);
 }
 pub fn day7() {
-    let timer = std::time::Instant::now();
-    let result = part1(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    title(7);
-    part(1, result);
-    time(t);
-    assert_eq!(result, 250453939);
-    let timer = std::time::Instant::now();
-    let result = part2(include_str!("input.txt"));
-    let t = timer.elapsed().as_secs_f32() * 1000.0;
-    part(2, result);
-    time(t);
-    assert_eq!(result,248652697);
+    let (r1,r2) = run_day("7", vec![include_str!("input.txt")],part1,part2);
+    assert_eq!(r1, 250453939);
+    assert_eq!(r2,248652697);
 }
 
 pub fn part1(data: &str) -> u32 {
@@ -119,7 +99,7 @@ impl Hand2 {
 
         others.sort_by(|a,b|b.1.cmp(&a.1));
 
-        if others.is_empty() {
+        if others.len() <= 1 {
             return HandType::Five;
         }
         return if others[0].1 + jokers == 5 {
