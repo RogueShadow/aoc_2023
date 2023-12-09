@@ -3,7 +3,7 @@ use crate::run_day;
 pub fn day6_tests() {
     let (r1,r2) = run_day("6 Tests", vec![include_str!("test.txt")],part1,part2);
     assert_eq!(r1,288);
-
+    assert_eq!(r2,71503);
 }
 pub fn day6() {
     let (r1,r2) = run_day("6", vec![include_str!("input.txt")],part1,part2);
