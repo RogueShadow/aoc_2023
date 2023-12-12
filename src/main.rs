@@ -9,6 +9,7 @@ use aoc_2023::day7::{day7, day7_tests};
 use aoc_2023::day8::{day8, day8_tests};
 use aoc_2023::day9::{day9, day9_tests};
 use aoc_2023::day10::{day10, day10_tests};
+use aoc_2023::day11::{day11, day11_tests};
 
 fn main() {
     println!("{}", aoc());
@@ -30,6 +31,8 @@ fn main() {
     //day8();
     //day9_tests();
     //day9();
-    day10_tests();
-    day10();
+    //day10_tests();
+    //day10();
+    day11_tests();
+    day11();
 }
