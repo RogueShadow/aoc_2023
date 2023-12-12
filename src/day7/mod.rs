@@ -3,12 +3,12 @@ use std::collections::HashMap;
 use crate::run_day;
 
 pub fn day7_tests() {
-    let (r1,r2) = run_day("7 Tests", vec![include_str!("test.txt")],part1,part2);
+    let (r1,r2) = run_day("7 Tests", vec![include_str!("test.txt")],part1,part2,Some(1.0));
     assert_eq!(r1,6440);
     assert_eq!(r2,5905);
 }
 pub fn day7() {
-    let (r1,r2) = run_day("7", vec![include_str!("input.txt")],part1,part2);
+    let (r1,r2) = run_day("7", vec![include_str!("input.txt")],part1,part2,Some(1.0));
     assert_eq!(r1, 250453939);
     assert_eq!(r2,248652697);
 }

@@ -8,25 +8,28 @@ use aoc_2023::day6::{day6, day6_tests};
 use aoc_2023::day7::{day7, day7_tests};
 use aoc_2023::day8::{day8, day8_tests};
 use aoc_2023::day9::{day9, day9_tests};
+use aoc_2023::day10::{day10, day10_tests};
 
 fn main() {
     println!("{}", aoc());
-    day1_tests();
+    //day1_tests();
     //day1();
-    day2_tests();
+    //day2_tests();
     //day2();
-    day3_tests();
+    //day3_tests();
     //day3();
-    day4_tests();
+    //day4_tests();
     //day4();
-    day5_tests();
+    //day5_tests();
     //day5();
-    day6_tests();
+    //day6_tests();
     //day6();
-    day7_tests();
+    //day7_tests();
     //day7();
-    day8_tests();
+    //day8_tests();
     //day8();
-    day9_tests();
+    //day9_tests();
     //day9();
+    day10_tests();
+    day10();
 }

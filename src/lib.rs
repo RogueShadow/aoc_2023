@@ -10,6 +10,7 @@ pub mod day6;
 pub mod day7;
 pub mod day8;
 pub mod day9;
+pub mod day10;
 
 pub mod colors {
     use std::fmt::Display;
@@ -32,7 +33,7 @@ pub mod colors {
     }
 }
 
-pub fn run_day<T,G>(day: &str, test: Vec<&str>,p1: fn(&str) -> T, p2: fn(&str) -> G) -> (T,G) where T: Display, G: Display {
+pub fn run_day<T,G>(day: &str, test: Vec<&str>,p1: fn(&str) -> T, p2: fn(&str) -> G, benchmark: Option<f32>) -> (T,G) where T: Display, G: Display {
     let (p1data,p2data) = if test.len() == 1 {
         (test[0],test[0])
     } else if test.len() == 2 {
@@ -40,18 +41,22 @@ pub fn run_day<T,G>(day: &str, test: Vec<&str>,p1: fn(&str) -> T, p2: fn(&str) -
     } else {
         panic!("length should be 1 or 2 only.")
     };
-    let timer = std::time::Instant::now();
-    let result1 = p1(p1data);
-    let t = timer.elapsed();
+    let (r1,r2) = (p1(p1data),p2(p2data));
     title(day);
-    part(1,&result1);
-    time(t);
-
+    part(1,&r1);
+    if let Some(b) = benchmark{ time(bench(b,p1data,p1)); }
+    part(2,&r2);
+    if let Some(b) = benchmark{ time(bench(b,p2data,p2)); }
+    (r1,r2)
+}
+pub fn bench<T>(bench_seconds: f32, data: &str, func: fn(&str) -> T) -> std::time::Duration where T: Display {
+    let duration = std::time::Duration::from_secs_f32(bench_seconds);
     let timer = std::time::Instant::now();
-    let result2 = p2(p2data);
-    let t = timer.elapsed();
-    part(2,&result2);
-    time(t);
-
-    (result1,result2)
+    let mut runs = 0u32;
+    while timer.elapsed() < duration {
+        func(data);
+        runs += 1;
+    }
+    let bench_time = timer.elapsed().div_f64(runs as f64);
+    bench_time
 }

@@ -3,12 +3,12 @@ use rayon::prelude::*;
 use crate::run_day;
 
 pub fn day5_tests() {
-    let (r1,r2) = run_day("5 Tests", vec![include_str!("test.txt")],part1,part2);
+    let (r1,r2) = run_day("5 Tests", vec![include_str!("test.txt")],part1,part2,Some(1.0));
     assert_eq!(r1,35);
     assert_eq!(r2,46);
 }
 pub fn day5() {
-    let (r1,r2) = run_day("5", vec![include_str!("input.txt")],part1,part2_smarter);
+    let (r1,r2) = run_day("5", vec![include_str!("input.txt")],part1,part2_smarter,Some(1.0));
     assert_eq!(r1,484023871);
     assert_eq!(r2,46294175);
 }

@@ -1,12 +1,12 @@
 use crate::run_day;
 
 pub fn day1_tests() {
-    let (r1,r2) = run_day("1 Tests",vec![include_str!("test.txt"),include_str!("test2.txt")],part1,part2);
+    let (r1,r2) = run_day("1 Tests",vec![include_str!("test.txt"),include_str!("test2.txt")],part1,part2,Some(1.0));
     assert_eq!(r1,142);
     assert_eq!(r2,281);
 }
 pub fn day1() {
-    let (r1,r2) = run_day("1",vec![include_str!("input.txt")],part1,part2);
+    let (r1,r2) = run_day("1",vec![include_str!("input.txt")],part1,part2,Some(1.0));
     assert_eq!(r1,54338);
     assert_eq!(r2,53389);
 }
